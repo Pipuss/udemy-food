@@ -3383,138 +3383,162 @@ module.exports = g;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es_promise_finally__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.promise.finally */ "./node_modules/core-js/modules/es.promise.finally.js");
-/* harmony import */ var core_js_modules_es_promise_finally__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise_finally__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.string.replace */ "./node_modules/core-js/modules/es.string.replace.js");
-/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
-/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
+/* harmony import */ var _modules_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/modal */ "./src/js/modules/modal.js");
+/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+/* harmony import */ var _modules_cards__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/cards */ "./src/js/modules/cards.js");
+/* harmony import */ var _modules_calculator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/calculator */ "./src/js/modules/calculator.js");
+/* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
+/* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/slider */ "./src/js/modules/slider.js");
+
+
+
+
 
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Tabs
-  const tabs = document.querySelectorAll('.tabheader__item'),
-        tabsContent = document.querySelectorAll('.tabcontent'),
-        tabsParent = document.querySelector('.tabheader__items');
+  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_0__["default"])();
+  Object(_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_2__["default"])();
+  Object(_modules_cards__WEBPACK_IMPORTED_MODULE_3__["default"])();
+  Object(_modules_calculator__WEBPACK_IMPORTED_MODULE_4__["default"])();
+  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_5__["default"])();
+  Object(_modules_slider__WEBPACK_IMPORTED_MODULE_6__["default"])();
+});
 
-  function hideTabContent() {
-    tabsContent.forEach(item => {
-      item.classList.add('hide');
-      item.classList.remove('show', 'fade');
-    });
-    tabs.forEach(item => {
-      item.classList.remove('tabheader__item_active');
-    });
+/***/ }),
+
+/***/ "./src/js/modules/calculator.js":
+/*!**************************************!*\
+  !*** ./src/js/modules/calculator.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function calculator() {
+  const result = document.querySelector('.calculating__result span');
+  let sex, height, weight, age, ratio;
+
+  if (localStorage.getItem('sex')) {
+    sex = localStorage.getItem('sex');
+  } else {
+    sex = 'female';
+    localStorage.setItem('sex', 'female');
   }
 
-  function showTabContent(i = 0) {
-    tabsContent[i].classList.add('show', 'fade');
-    tabsContent[i].classList.remove('hide');
-    tabs[i].classList.add('tabheader__item_active');
+  if (localStorage.getItem('ratio')) {
+    ratio = localStorage.getItem('ratio');
+  } else {
+    ratio = 1.375;
+    localStorage.setItem('ratio', 1.375);
   }
 
-  hideTabContent();
-  showTabContent();
-  tabsParent.addEventListener('click', event => {
-    const target = event.target;
-
-    if (target && target.classList.contains('tabheader__item')) {
-      tabs.forEach((item, i) => {
-        if (target === item) {
-          hideTabContent();
-          showTabContent(i);
-        }
-      });
-    }
-  }); // Timer
-
-  const deadline = '2022-5-19'; // yyyy-mm-dd
-
-  function getTimeRemaining(endtime) {
-    const t = Date.parse(endtime) - Date.parse(new Date()),
-          days = Math.floor(t / (1000 * 60 * 60 * 24)),
-          hours = Math.floor(t / (1000 * 60 * 60) % 24),
-          minutes = Math.floor(t / 1000 / 60 % 60),
-          seconds = Math.floor(t / 1000 % 60);
-    return {
-      'total': t,
-      'days': days,
-      'hours': hours,
-      'minutes': minutes,
-      'seconds': seconds
-    };
-  }
-
-  function setClock(selector, endtime) {
-    const timer = document.querySelector(selector),
-          days = timer.querySelector('#days'),
-          hours = timer.querySelector('#hours'),
-          minutes = timer.querySelector('#minutes'),
-          seconds = timer.querySelector('#seconds'),
-          timeInterval = setInterval(updateClock, 1000);
-    updateClock();
-
-    function setZero(num) {
-      return num < 10 ? `0${num}` : num;
+  function calcTotal() {
+    if (!sex || !height || !weight || !age || !ratio) {
+      result.textContent = '____';
+      return;
     }
 
-    function updateClock() {
-      const t = getTimeRemaining(endtime);
-      days.textContent = setZero(t.days);
-      hours.textContent = setZero(t.hours);
-      minutes.textContent = setZero(t.minutes);
-      seconds.textContent = setZero(t.seconds);
+    if (sex === 'female') {
+      result.textContent = Math.round((447.6 + 9.2 * weight + 3.1 * height - 4.3 * age) * ratio);
+    } else {
+      result.textContent = Math.round((88.36 + 13.4 * weight + 4.8 * height - 5.7 * age) * ratio);
+    }
+  }
 
-      if (t.total <= 0) {
-        clearInterval(timeInterval);
+  calcTotal();
+
+  function initLocalSettings(selector, activeClass) {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(elem => {
+      elem.classList.remove(activeClass);
+
+      if (elem.getAttribute('id') === localStorage.getItem('sex')) {
+        elem.classList.add(activeClass);
       }
-    }
+
+      if (elem.getAttribute('data-ratio') === localStorage.getItem('ratio')) {
+        elem.classList.add(activeClass);
+      }
+    });
   }
 
-  setClock('.timer', deadline); // Modal
+  initLocalSettings('#gender div', 'calculating__choose-item_active');
+  initLocalSettings('.calculating__choose_big div', 'calculating__choose-item_active');
 
-  const modalTrigger = document.querySelectorAll('[data-modal]'),
-        modal = document.querySelector('.modal');
-  modalTrigger.forEach(btn => {
-    btn.addEventListener('click', openModal);
-  });
+  function getStaticInformation(selector, activeClass) {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(elem => {
+      elem.addEventListener('click', e => {
+        if (e.target.getAttribute('data-ratio')) {
+          ratio = +e.target.getAttribute('data-ratio');
+          localStorage.setItem('ratio', +e.target.getAttribute('data-ratio'));
+        } else {
+          sex = e.target.getAttribute('id');
+          localStorage.setItem('sex', e.target.getAttribute('id'));
+        }
 
-  function openModal() {
-    modal.classList.add('show', 'fade');
-    modal.classList.remove('hide');
-    document.body.style.overflow = 'hidden';
-    clearInterval(modalTimerId);
+        elements.forEach(elem => {
+          elem.classList.remove(activeClass);
+        });
+        e.target.classList.add(activeClass);
+        calcTotal();
+      });
+    });
   }
 
-  function closeModal() {
-    modal.classList.remove('show', 'fade');
-    modal.classList.add('hide');
-    document.body.style.overflow = '';
+  getStaticInformation('#gender div', 'calculating__choose-item_active');
+  getStaticInformation('.calculating__choose_big div', 'calculating__choose-item_active');
+
+  function getDynamicInformation(selector) {
+    const input = document.querySelector(selector);
+    input.addEventListener('input', () => {
+      if (input.value.match(/\D/g)) {
+        input.style.boxShadow = '0px 4px 15px red';
+      } else {
+        input.style.boxShadow = '0px 4px 15px rgb(0 0 0 / 0.2)';
+      }
+
+      switch (input.getAttribute('id')) {
+        case 'height':
+          height = +input.value;
+          break;
+
+        case 'weight':
+          weight = +input.value;
+          break;
+
+        case 'age':
+          age = +input.value;
+          break;
+      }
+
+      calcTotal();
+    });
   }
 
-  modal.addEventListener('click', event => {
-    if (event.target === modal || event.target.getAttribute('data-close') === "") {
-      closeModal();
-    }
-  });
-  document.addEventListener('keydown', event => {
-    if (event.code === 'Escape' && modal.classList.contains('show')) {
-      closeModal();
-    }
-  });
-  const modalTimerId = setTimeout(openModal, 5000);
-  clearInterval(modalTimerId);
+  getDynamicInformation('#height');
+  getDynamicInformation('#weight');
+  getDynamicInformation('#age');
+}
 
-  function showModalByScroll() {
-    if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1) {
-      openModal();
-      window.removeEventListener('scroll', showModalByScroll);
-    }
-  }
+/* harmony default export */ __webpack_exports__["default"] = (calculator);
 
-  window.addEventListener('scroll', showModalByScroll); // Menu cards class
+/***/ }),
 
+/***/ "./src/js/modules/cards.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/cards.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function cards() {
   class MenuCard {
     constructor(src, alt, title, desc, price, parentSelector, ...classes) {
       this.src = src;
@@ -3576,8 +3600,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }) => {
       new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
     });
-  }); // Forms
+  });
+}
 
+/* harmony default export */ __webpack_exports__["default"] = (cards);
+
+/***/ }),
+
+/***/ "./src/js/modules/forms.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/forms.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_promise_finally__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.promise.finally */ "./node_modules/core-js/modules/es.promise.finally.js");
+/* harmony import */ var core_js_modules_es_promise_finally__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise_finally__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/web.dom-collections.iterator */ "./node_modules/core-js/modules/web.dom-collections.iterator.js");
+/* harmony import */ var core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_iterator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modal */ "./src/js/modules/modal.js");
+
+
+
+
+function forms() {
   const forms = document.querySelectorAll('form');
   const message = {
     loading: 'img/form/spinner.svg',
@@ -3621,31 +3669,86 @@ document.addEventListener('DOMContentLoaded', () => {
         form.reset();
       });
     });
-  } // Dialog modal
+  }
+}
 
+/* harmony default export */ __webpack_exports__["default"] = (forms);
 
-  function showThanksModal(message) {
-    const prevModalDialog = document.querySelector('.modal__dialog');
-    prevModalDialog.classList.add('hide');
-    openModal();
-    const thanksModal = document.createElement('div');
-    thanksModal.classList.add('modal__dialog');
-    thanksModal.innerHTML = `
-            <div class="modal__content">
-                <div class="modal__close" data-close>×</div>
-                <div class="modal__title">${message}</div>
-            </div>
-        `;
-    document.querySelector('.modal').append(thanksModal);
-    setTimeout(() => {
-      thanksModal.remove();
-      prevModalDialog.classList.add('show');
-      prevModalDialog.classList.remove('hide');
+/***/ }),
+
+/***/ "./src/js/modules/modal.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/modal.js ***!
+  \*********************************/
+/*! exports provided: default, closeModal, openModal */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "closeModal", function() { return closeModal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "openModal", function() { return openModal; });
+function openModal() {
+  modal.classList.add('show', 'fade');
+  modal.classList.remove('hide');
+  document.body.style.overflow = 'hidden';
+  clearInterval(modalTimerId);
+}
+
+function closeModal() {
+  modal.classList.remove('show', 'fade');
+  modal.classList.add('hide');
+  document.body.style.overflow = '';
+}
+
+function modal() {
+  const modalTrigger = document.querySelectorAll('[data-modal]'),
+        modal = document.querySelector('.modal');
+  modalTrigger.forEach(btn => {
+    btn.addEventListener('click', openModal);
+  });
+  modal.addEventListener('click', event => {
+    if (event.target === modal || event.target.getAttribute('data-close') === "") {
       closeModal();
-    }, 4000);
-  } // Slider
+    }
+  });
+  document.addEventListener('keydown', event => {
+    if (event.code === 'Escape' && modal.classList.contains('show')) {
+      closeModal();
+    }
+  });
+  const modalTimerId = setTimeout(openModal, 5000);
+  clearInterval(modalTimerId);
+
+  function showModalByScroll() {
+    if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1) {
+      openModal();
+      window.removeEventListener('scroll', showModalByScroll);
+    }
+  }
+
+  window.addEventListener('scroll', showModalByScroll);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (modal);
 
 
+
+/***/ }),
+
+/***/ "./src/js/modules/slider.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/slider.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.string.replace */ "./node_modules/core-js/modules/es.string.replace.js");
+/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function slider() {
   let slideIndex = 1,
       offset = 0;
   const slides = document.querySelectorAll('.offer__slide'),
@@ -3790,113 +3893,120 @@ document.addEventListener('DOMContentLoaded', () => {
       dots.forEach(dot => dot.style.opacity = '.5');
       dots[slideIndex - 1].style.opacity = 1;
     });
-  }); // Calculator
+  });
+}
 
-  const result = document.querySelector('.calculating__result span');
-  let sex, height, weight, age, ratio;
+/* harmony default export */ __webpack_exports__["default"] = (slider);
 
-  if (localStorage.getItem('sex')) {
-    sex = localStorage.getItem('sex');
-  } else {
-    sex = 'female';
-    localStorage.setItem('sex', 'female');
-  }
+/***/ }),
 
-  if (localStorage.getItem('ratio')) {
-    ratio = localStorage.getItem('ratio');
-  } else {
-    ratio = 1.375;
-    localStorage.setItem('ratio', 1.375);
-  }
+/***/ "./src/js/modules/tabs.js":
+/*!********************************!*\
+  !*** ./src/js/modules/tabs.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-  function calcTotal() {
-    if (!sex || !height || !weight || !age || !ratio) {
-      result.textContent = '____';
-      return;
-    }
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function tabs() {
+  const tabs = document.querySelectorAll('.tabheader__item'),
+        tabsContent = document.querySelectorAll('.tabcontent'),
+        tabsParent = document.querySelector('.tabheader__items');
 
-    if (sex === 'female') {
-      result.textContent = Math.round((447.6 + 9.2 * weight + 3.1 * height - 4.3 * age) * ratio);
-    } else {
-      result.textContent = Math.round((88.36 + 13.4 * weight + 4.8 * height - 5.7 * age) * ratio);
-    }
-  }
-
-  calcTotal();
-
-  function initLocalSettings(selector, activeClass) {
-    const elements = document.querySelectorAll(selector);
-    elements.forEach(elem => {
-      elem.classList.remove(activeClass);
-
-      if (elem.getAttribute('id') === localStorage.getItem('sex')) {
-        elem.classList.add(activeClass);
-      }
-
-      if (elem.getAttribute('data-ratio') === localStorage.getItem('ratio')) {
-        elem.classList.add(activeClass);
-      }
+  function hideTabContent() {
+    tabsContent.forEach(item => {
+      item.classList.add('hide');
+      item.classList.remove('show', 'fade');
+    });
+    tabs.forEach(item => {
+      item.classList.remove('tabheader__item_active');
     });
   }
 
-  initLocalSettings('#gender div', 'calculating__choose-item_active');
-  initLocalSettings('.calculating__choose_big div', 'calculating__choose-item_active');
+  function showTabContent(i = 0) {
+    tabsContent[i].classList.add('show', 'fade');
+    tabsContent[i].classList.remove('hide');
+    tabs[i].classList.add('tabheader__item_active');
+  }
 
-  function getStaticInformation(selector, activeClass) {
-    const elements = document.querySelectorAll(selector);
-    elements.forEach(elem => {
-      elem.addEventListener('click', e => {
-        if (e.target.getAttribute('data-ratio')) {
-          ratio = +e.target.getAttribute('data-ratio');
-          localStorage.setItem('ratio', +e.target.getAttribute('data-ratio'));
-        } else {
-          sex = e.target.getAttribute('id');
-          localStorage.setItem('sex', e.target.getAttribute('id'));
+  hideTabContent();
+  showTabContent();
+  tabsParent.addEventListener('click', event => {
+    const target = event.target;
+
+    if (target && target.classList.contains('tabheader__item')) {
+      tabs.forEach((item, i) => {
+        if (target === item) {
+          hideTabContent();
+          showTabContent(i);
         }
-
-        elements.forEach(elem => {
-          elem.classList.remove(activeClass);
-        });
-        e.target.classList.add(activeClass);
-        calcTotal();
       });
-    });
+    }
+  });
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (tabs);
+
+/***/ }),
+
+/***/ "./src/js/modules/timer.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/timer.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function timer() {
+  const deadline = '2022-5-19'; // yyyy-mm-dd
+
+  function getTimeRemaining(endtime) {
+    const t = Date.parse(endtime) - Date.parse(new Date()),
+          days = Math.floor(t / (1000 * 60 * 60 * 24)),
+          hours = Math.floor(t / (1000 * 60 * 60) % 24),
+          minutes = Math.floor(t / 1000 / 60 % 60),
+          seconds = Math.floor(t / 1000 % 60);
+    return {
+      'total': t,
+      'days': days,
+      'hours': hours,
+      'minutes': minutes,
+      'seconds': seconds
+    };
   }
 
-  getStaticInformation('#gender div', 'calculating__choose-item_active');
-  getStaticInformation('.calculating__choose_big div', 'calculating__choose-item_active');
+  function setClock(selector, endtime) {
+    const timer = document.querySelector(selector),
+          days = timer.querySelector('#days'),
+          hours = timer.querySelector('#hours'),
+          minutes = timer.querySelector('#minutes'),
+          seconds = timer.querySelector('#seconds'),
+          timeInterval = setInterval(updateClock, 1000);
+    updateClock();
 
-  function getDynamicInformation(selector) {
-    const input = document.querySelector(selector);
-    input.addEventListener('input', () => {
-      if (input.value.match(/\D/g)) {
-        input.style.boxShadow = '0px 4px 15px red';
-      } else {
-        input.style.boxShadow = '0px 4px 15px rgb(0 0 0 / 0.2)';
+    function setZero(num) {
+      return num < 10 ? `0${num}` : num;
+    }
+
+    function updateClock() {
+      const t = getTimeRemaining(endtime);
+      days.textContent = setZero(t.days);
+      hours.textContent = setZero(t.hours);
+      minutes.textContent = setZero(t.minutes);
+      seconds.textContent = setZero(t.seconds);
+
+      if (t.total <= 0) {
+        clearInterval(timeInterval);
       }
-
-      switch (input.getAttribute('id')) {
-        case 'height':
-          height = +input.value;
-          break;
-
-        case 'weight':
-          weight = +input.value;
-          break;
-
-        case 'age':
-          age = +input.value;
-          break;
-      }
-
-      calcTotal();
-    });
+    }
   }
 
-  getDynamicInformation('#height');
-  getDynamicInformation('#weight');
-  getDynamicInformation('#age');
-});
+  setClock('.timer', deadline);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (timer);
 
 /***/ })
 

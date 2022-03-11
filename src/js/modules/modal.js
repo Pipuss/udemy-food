@@ -1,3 +1,16 @@
+function openModal() {
+    modal.classList.add('show', 'fade');
+    modal.classList.remove('hide');
+    document.body.style.overflow = 'hidden';
+    clearInterval(modalTimerId);
+}
+
+function closeModal() {
+    modal.classList.remove('show', 'fade');
+    modal.classList.add('hide');
+    document.body.style.overflow = '';
+}
+
 function modal() {
     const modalTrigger = document.querySelectorAll('[data-modal]'),
           modal = document.querySelector('.modal');
@@ -5,19 +18,6 @@ function modal() {
     modalTrigger.forEach(btn => {
         btn.addEventListener('click', openModal);
     });
-
-    function openModal() {
-        modal.classList.add('show', 'fade');
-        modal.classList.remove('hide');
-        document.body.style.overflow = 'hidden';
-        clearInterval(modalTimerId);
-    }
-
-    function closeModal() {
-        modal.classList.remove('show', 'fade');
-        modal.classList.add('hide');
-        document.body.style.overflow = '';
-    }
     
     modal.addEventListener('click', (event) => {
         if (event.target === modal || event.target.getAttribute('data-close') === "") {
@@ -45,3 +45,5 @@ function modal() {
 }
 
 export default modal;
+export {closeModal};
+export {openModal};

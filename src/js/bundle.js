@@ -289,6 +289,9 @@ function cards() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal */ "./src/js/modules/modal.js");
+
+
 function forms() {
     const forms = document.querySelectorAll('form');
     const message = {
@@ -351,11 +354,26 @@ function forms() {
 /*!*********************************!*\
   !*** ./src/js/modules/modal.js ***!
   \*********************************/
-/*! exports provided: default */
+/*! exports provided: default, closeModal, openModal */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "closeModal", function() { return closeModal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "openModal", function() { return openModal; });
+function openModal() {
+    modal.classList.add('show', 'fade');
+    modal.classList.remove('hide');
+    document.body.style.overflow = 'hidden';
+    clearInterval(modalTimerId);
+}
+
+function closeModal() {
+    modal.classList.remove('show', 'fade');
+    modal.classList.add('hide');
+    document.body.style.overflow = '';
+}
+
 function modal() {
     const modalTrigger = document.querySelectorAll('[data-modal]'),
           modal = document.querySelector('.modal');
@@ -363,19 +381,6 @@ function modal() {
     modalTrigger.forEach(btn => {
         btn.addEventListener('click', openModal);
     });
-
-    function openModal() {
-        modal.classList.add('show', 'fade');
-        modal.classList.remove('hide');
-        document.body.style.overflow = 'hidden';
-        clearInterval(modalTimerId);
-    }
-
-    function closeModal() {
-        modal.classList.remove('show', 'fade');
-        modal.classList.add('hide');
-        document.body.style.overflow = '';
-    }
     
     modal.addEventListener('click', (event) => {
         if (event.target === modal || event.target.getAttribute('data-close') === "") {
@@ -403,6 +408,8 @@ function modal() {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (modal);
+
+
 
 /***/ }),
 
@@ -490,7 +497,7 @@ function slider() {
         }
         indicators.append(dot);
         dots.push(dot);
-}
+    }
 
     function deleteNotDigits(str) {
         return +str.replace(/\D/g, '');
